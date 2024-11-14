@@ -1,7 +1,7 @@
 import duckdb
-import argparse
 import time
 import os
+from helper import get_s3_path, get_args
 
 def run_query(mode, key_id, secret, num_runs=10):
     """
@@ -16,13 +16,6 @@ def run_query(mode, key_id, secret, num_runs=10):
     Returns:
     None
     """
-    if mode == "single_file":
-        # S3 file path
-        s3_path = 's3://md-test-bucket-user-1/20_med_parquet_files/yellow_trip_data_med_1.parquet'
-    elif mode == "multiple_files":
-        # S3 directory path
-        s3_path = 's3://md-test-bucket-user-1/20_med_parquet_files/*.parquet'
-
     # Connect to DuckDB (in-memory database)
     con = duckdb.connect()
 
@@ -40,6 +33,7 @@ def run_query(mode, key_id, secret, num_runs=10):
     """
     con.execute(query)
 
+    s3_path = get_s3_path(mode)
     times = []
     for i in range(num_runs):
         # Measure time taken to execute the query
@@ -60,17 +54,7 @@ def run_query(mode, key_id, secret, num_runs=10):
 
 
 def main():
-    # Set up argument parsing
-    parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", type=str, required=True, help="mode to run the query in: single_file vs. multiple_files")
-    parser.add_argument("--key_id", type=str, required=False, help="AWS access key ID")
-    parser.add_argument("--secret", type=str, required=False, help="AWS secret access key")
-    parser.add_argument("--num_runs", type=int, default=10, help="number of times to run the query")
-
-    # Parse arguments
-    args = parser.parse_args()
-
-    # Run the query with the provided arguments
+    args = get_args()
     run_query(args.mode, args.key_id, args.secret, args.num_runs)
 
 if __name__ == "__main__":

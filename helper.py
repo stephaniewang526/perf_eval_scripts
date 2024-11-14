@@ -8,6 +8,12 @@ def get_s3_path(mode):
         return 's3://md-test-bucket-user-1/yellow_trip_data_1gb.parquet'
     elif mode == "single_five_gb":
         return 's3://md-test-bucket-user-1/yellow_trip_data_5gb.parquet'
+    elif mode == "single_ten_gb":
+        return 's3://md-test-bucket-user-1/yellow_trip_data_10gb.parquet'
+    elif mode == "single_twenty_gb":
+        return 's3://md-test-bucket-user-1/yellow_trip_data_20gb.parquet'
+    elif mode == "single_hundred_gb":
+        return 's3://md-test-bucket-user-1/yellow_trip_data_100gb.parquet'
     else:
         raise ValueError(f"Unknown mode: {mode}")
 

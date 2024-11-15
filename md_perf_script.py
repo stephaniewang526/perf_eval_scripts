@@ -4,6 +4,7 @@ import time
 import os
 from helper import get_s3_path, get_args
 
+
 def run_query(mode, key_id, md_token, secret, num_runs=10):
     """
     Run a query on data stored in S3 using MotherDuck and measure execution time.
@@ -60,6 +61,7 @@ def run_query(mode, key_id, md_token, secret, num_runs=10):
 def main():
     args = get_args()
     run_query(args.mode, args.key_id, args.secret, args.md_token, args.num_runs)
+
 
 if __name__ == "__main__":
     main()

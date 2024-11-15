@@ -1,4 +1,6 @@
 import argparse
+
+
 def get_s3_path(mode):
     if mode == "single_mb":
         return 's3://md-test-bucket-user-1/20_med_parquet_files/yellow_trip_data_med_1.parquet'
@@ -16,6 +18,7 @@ def get_s3_path(mode):
         return 's3://md-test-bucket-user-1/yellow_trip_data_100gb.parquet'
     else:
         raise ValueError(f"Unknown mode: {mode}")
+
 
 def get_args():
     parser = argparse.ArgumentParser()

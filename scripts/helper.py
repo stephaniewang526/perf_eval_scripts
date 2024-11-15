@@ -1,32 +1,34 @@
 import argparse
 
 
-def get_s3_path(mode):
-    if mode == "single_mb":
+def get_s3_path(file_size):
+    if file_size == "500m":
         return 's3://md-test-bucket-user-1/20_med_parquet_files/yellow_trip_data_med_1.parquet'
-    elif mode == "multi_mb":
+    elif file_size == "multi_500m":
         return 's3://md-test-bucket-user-1/20_med_parquet_files/*.parquet'
-    elif mode == "single_gb":
+    elif file_size == "1g":
         return 's3://md-test-bucket-user-1/yellow_trip_data_1gb.parquet'
-    elif mode == "single_five_gb":
+    elif file_size == "5g":
         return 's3://md-test-bucket-user-1/yellow_trip_data_5gb.parquet'
-    elif mode == "single_ten_gb":
+    elif file_size == "10g":
         return 's3://md-test-bucket-user-1/yellow_trip_data_10gb.parquet'
-    elif mode == "single_twenty_gb":
+    elif file_size == "20g":
         return 's3://md-test-bucket-user-1/yellow_trip_data_20gb.parquet'
-    elif mode == "single_hundred_gb":
-        return 's3://md-test-bucket-user-1/yellow_trip_data_100gb.parquet'
+    elif file_size == "100g":
+        return 's3://md-test-bucket-user-1/tpcds/raw_parquet/sf1000/catalog_sales/0.parquet'
+    elif file_size == "150g":
+        return 's3://md-test-bucket-user-1/tpcds/raw_parquet/sf1000/store_sales/0.parquet'
     else:
-        raise ValueError(f"Unknown mode: {mode}")
+        raise ValueError(f"Unsupported size: {file_size}")
 
 
 def get_args():
     parser = argparse.ArgumentParser()
-    parser.add_argument("--mode", type=str, required=True, help="mode to run the query in: single_mb, multi_mb, single_gb, etc.")
+    parser.add_argument("--file_size", type=str, default="1g", help="File size")
     parser.add_argument("--key_id", type=str, required=False, help="AWS access key ID")
     parser.add_argument("--secret", type=str, required=False, help="AWS secret access key")
     parser.add_argument("--md_token", type=str, required=False, help="MotherDuck token")
-    parser.add_argument("--num_runs", type=int, default=10, help="number of times to run the query")
+    parser.add_argument("--num_runs", type=int, default=1, help="Number of times to run the query")
 
     # Parse arguments
     return parser.parse_args()

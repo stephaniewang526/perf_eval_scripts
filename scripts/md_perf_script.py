@@ -5,7 +5,7 @@ import os
 from helper import get_s3_path, get_args
 
 
-def run_query(mode, key_id, md_token, secret, num_runs=10):
+def run_query(file_size, key_id, md_token, secret, num_runs):
     """
     Run a query on data stored in S3 using MotherDuck and measure execution time.
 
@@ -38,7 +38,7 @@ def run_query(mode, key_id, md_token, secret, num_runs=10):
     """
     con.execute(query)
 
-    s3_path = get_s3_path(mode)
+    s3_path = get_s3_path(file_size)
     times = []
     for i in range(num_runs):
         # Measure time taken to execute the query
@@ -55,12 +55,12 @@ def run_query(mode, key_id, md_token, secret, num_runs=10):
 
     # Calculate the average time
     avg_time = sum(times) / num_runs
-    print(f"\nAverage query execution time over {num_runs} runs: {avg_time:.4f} seconds")
+    print(f"\nAverage query execution time to scan {file_size} [{num_runs} run(s)]: {avg_time:.4f} seconds")
 
 
 def main():
     args = get_args()
-    run_query(args.mode, args.key_id, args.secret, args.md_token, args.num_runs)
+    run_query(args.file_size, args.key_id, args.secret, args.md_token, args.num_runs)
 
 
 if __name__ == "__main__":

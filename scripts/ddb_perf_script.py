@@ -55,6 +55,7 @@ def run_query(mode, key_id, secret, num_runs):
 
 
 def main():
+    print(f"ddb_perf_python pid= {os.getpid()}")
     args = get_args()
     run_query(args.file_size, args.key_id, args.secret, args.num_runs)
 

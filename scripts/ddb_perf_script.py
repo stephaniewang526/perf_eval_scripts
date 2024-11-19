@@ -4,7 +4,7 @@ import os
 from helper import get_s3_path, get_args
 
 
-def run_query(mode, key_id, secret, num_runs):
+def run_query(file_size, key_id, secret, num_runs):
     """
     Run a query on data stored in S3 using DuckDB and measure execution time.
 
@@ -20,21 +20,23 @@ def run_query(mode, key_id, secret, num_runs):
     # Connect to DuckDB (in-memory database)
     con = duckdb.connect()
 
-    key_id = key_id or os.getenv("S3_KEY_ID")
-    secret = secret or os.getenv("S3_SECRET")
+    if "public" not in file_size:
+        key_id = key_id or os.getenv("S3_KEY_ID")
+        secret = secret or os.getenv("S3_SECRET")
 
-    # Create secret
-    query = f"""
-    CREATE OR REPLACE SECRET (
-        TYPE S3,
-        KEY_ID '{key_id}',
-        SECRET '{secret}',
-        REGION 'us-east-1'
-    );
-    """
-    con.execute(query)
+        # Create secret
+        query = f"""
+        CREATE OR REPLACE SECRET (
+            TYPE S3,
+            KEY_ID '{key_id}',
+            SECRET '{secret}',
+            REGION 'us-east-1'
+        );
+        """
+        con.execute(query)
+        print("Created secret to access the file.")
 
-    s3_path = get_s3_path(mode)
+    s3_path = get_s3_path(file_size)
     times = []
     for i in range(num_runs):
         # Measure time taken to execute the query

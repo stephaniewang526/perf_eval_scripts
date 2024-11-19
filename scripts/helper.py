@@ -8,6 +8,8 @@ def get_s3_path(file_size):
         return 's3://md-test-bucket-user-1/20_med_parquet_files/*.parquet'
     elif file_size == "1g":
         return 's3://md-test-bucket-user-1/yellow_trip_data_1gb.parquet'
+    elif file_size == "1g_public":
+        return 's3://motherduck-public/yellow_trip_data_1gb.parquet'
     elif file_size == "5g":
         return 's3://md-test-bucket-user-1/yellow_trip_data_5gb.parquet'
     elif file_size == "10g":

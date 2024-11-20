@@ -20,6 +20,10 @@ def run_query(file_size, key_id, secret, num_runs):
     # Connect to DuckDB (in-memory database)
     con = duckdb.connect()
 
+    # Force ddb to execute using only 1 thread
+    con.execute("SET threads TO 1")
+    print("Set thread count to 1.")
+
     if "public" not in file_size:
         key_id = key_id or os.getenv("S3_KEY_ID")
         secret = secret or os.getenv("S3_SECRET")
@@ -37,13 +41,11 @@ def run_query(file_size, key_id, secret, num_runs):
         print("Created secret to access the file.")
 
     s3_path = get_s3_path(file_size)
+    print(f"file_size scannoed: {file_size}")
     times = []
     for i in range(num_runs):
         # Measure time taken to execute the query
         start_time = time.time()
-        # Force ddb to execute using only 1 thread
-        con.execute("SET threads TO 1")
-        print("Set thread count to 1.")
 
         # Run the query on the data from the S3 path where we scan the whole table but return only 1 row
         query = f"""
@@ -54,7 +56,7 @@ def run_query(file_size, key_id, secret, num_runs):
             SUM(passenger_count) AS total_passengers,
             AVG(trip_distance) AS average_distance,
             AVG(RatecodeID) AS average_ratecode,
-            COUNT(store_and_fwd_flag) AS count_flags,
+            AVG(LENGTH(store_and_fwd_flag)) AS average_flags,
             SUM(PULocationID) AS total_pickup_locations,
             SUM(DOLocationID) AS total_dropoff_locations,
             AVG(payment_type) AS average_payment_type,

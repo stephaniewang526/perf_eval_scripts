@@ -52,7 +52,7 @@ def run_query(file_size, key_id, md_token, secret, num_runs):
             SUM(passenger_count) AS total_passengers,
             AVG(trip_distance) AS average_distance,
             AVG(RatecodeID) AS average_ratecode,
-            COUNT(store_and_fwd_flag) AS count_flags,
+            AVG(LENGTH(store_and_fwd_flag)) AS average_flags,
             SUM(PULocationID) AS total_pickup_locations,
             SUM(DOLocationID) AS total_dropoff_locations,
             AVG(payment_type) AS average_payment_type,

@@ -44,7 +44,29 @@ def run_query(file_size, key_id, md_token, secret, num_runs):
         # Measure time taken to execute the query
         start_time = time.time()
         # Run the query on the data from the S3 path
-        query = f"SELECT * FROM '{s3_path}';"
+        query = f"""
+        SELECT
+            COUNT(VendorID) AS count_vendorid,
+            MIN(tpep_pickup_datetime) AS min_pickup,
+            MAX(tpep_dropoff_datetime) AS max_dropoff,
+            SUM(passenger_count) AS total_passengers,
+            AVG(trip_distance) AS average_distance,
+            AVG(RatecodeID) AS average_ratecode,
+            COUNT(store_and_fwd_flag) AS count_flags,
+            SUM(PULocationID) AS total_pickup_locations,
+            SUM(DOLocationID) AS total_dropoff_locations,
+            AVG(payment_type) AS average_payment_type,
+            AVG(fare_amount) AS average_fare,
+            SUM(extra) AS total_extra,
+            SUM(mta_tax) AS total_tax,
+            SUM(tip_amount) AS total_tips,
+            SUM(tolls_amount) AS total_tolls,
+            SUM(improvement_surcharge) AS total_surcharge,
+            SUM(total_amount) AS total_revenue,
+            SUM(congestion_surcharge) AS total_congestion,
+            SUM(Airport_fee) AS total_airport_fees
+        FROM '{s3_path}';
+        """
         con.execute(query)
         end_time = time.time()
 

@@ -16,10 +16,10 @@ def get_s3_path(file_size):
         return 's3://md-test-bucket-user-1/yellow_trip_data_10gb.parquet'
     elif file_size == "20g":
         return 's3://md-test-bucket-user-1/yellow_trip_data_20gb.parquet'
-    elif file_size == "100g":
-        return 's3://md-test-bucket-user-1/tpcds/raw_parquet/sf1000/catalog_sales/0.parquet'
-    elif file_size == "150g":
-        return 's3://md-test-bucket-user-1/tpcds/raw_parquet/sf1000/store_sales/0.parquet'
+    # elif file_size == "100g":
+    #     return 's3://md-test-bucket-user-1/tpcds/raw_parquet/sf1000/catalog_sales/0.parquet'
+    # elif file_size == "150g":
+    #     return 's3://md-test-bucket-user-1/tpcds/raw_parquet/sf1000/store_sales/0.parquet'
     else:
         raise ValueError(f"Unsupported size: {file_size}")
 

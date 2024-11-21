@@ -4,7 +4,7 @@ import os
 from helper import get_s3_path, get_args
 
 
-def run_query(file_size, key_id, secret, num_runs):
+def run_query(file_size, key_id, secret, num_runs, thread_count):
     """
     Run a query on data stored in S3 using DuckDB and measure execution time.
 
@@ -21,8 +21,8 @@ def run_query(file_size, key_id, secret, num_runs):
     con = duckdb.connect()
 
     # Force ddb to execute using only 1 thread
-    con.execute("SET threads TO 1")
-    print("Set thread count to 1.")
+    con.execute(f"SET threads TO {thread_count}")
+    print(f"Set thread count to {thread_count}.")
 
     if "public" not in file_size:
         key_id = key_id or os.getenv("S3_KEY_ID")
@@ -87,7 +87,7 @@ def run_query(file_size, key_id, secret, num_runs):
 def main():
     print(f"ddb_perf_python pid= {os.getpid()}")
     args = get_args()
-    run_query(args.file_size, args.key_id, args.secret, args.num_runs)
+    run_query(args.file_size, args.key_id, args.secret, args.num_runs, args.thread_count)
 
 
 if __name__ == "__main__":

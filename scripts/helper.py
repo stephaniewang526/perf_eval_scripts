@@ -31,6 +31,7 @@ def get_args():
     parser.add_argument("--secret", type=str, required=False, help="AWS secret access key")
     parser.add_argument("--md_token", type=str, required=False, help="MotherDuck token")
     parser.add_argument("--num_runs", type=int, default=1, help="Number of times to run the query")
+    parser.add_argument("--thread_count", type=int, default=64, help="DuckDB total thread count")
 
     # Parse arguments
     return parser.parse_args()

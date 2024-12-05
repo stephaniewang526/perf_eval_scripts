@@ -1,8 +1,10 @@
 import argparse
 
 
-def get_s3_path(file_size):
-    if file_size == "500m":
+def get_s3_path(file_size, no_tls):
+    if no_tls:
+        return 'http://md-duckdblabs.s3.us-east-1.amazonaws.com/yellow_trip_data/yellow_trip_data_1gb.parquet'
+    elif file_size == "500m":
         return 's3://md-test-bucket-user-1/20_med_parquet_files/yellow_trip_data_med_1.parquet'
     elif file_size == "multi_500m":
         return 's3://md-test-bucket-user-1/20_med_parquet_files/*.parquet'
@@ -27,6 +29,7 @@ def get_s3_path(file_size):
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--file_size", type=str, default="1g", help="File size")
+    parser.add_argument("--no_tls", type=str, default=False, help="Reading public file")
     parser.add_argument("--key_id", type=str, required=False, help="AWS access key ID")
     parser.add_argument("--secret", type=str, required=False, help="AWS secret access key")
     parser.add_argument("--md_token", type=str, required=False, help="MotherDuck token")

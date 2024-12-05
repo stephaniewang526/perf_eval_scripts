@@ -4,7 +4,7 @@ import os
 from helper import get_s3_path, get_args
 
 
-def run_query(file_size, key_id, secret, num_runs, thread_count):
+def run_query(file_size, no_tls, key_id, secret, num_runs, thread_count):
     """
     Run a query on data stored in S3 using DuckDB and measure execution time.
 
@@ -24,7 +24,7 @@ def run_query(file_size, key_id, secret, num_runs, thread_count):
     con.execute(f"SET threads TO {thread_count}")
     print(f"Set thread count to {thread_count}.")
 
-    if "public" not in file_size:
+    if ("public" not in file_size) and (no_tls == False):
         key_id = key_id or os.getenv("S3_KEY_ID")
         secret = secret or os.getenv("S3_SECRET")
 
@@ -40,8 +40,8 @@ def run_query(file_size, key_id, secret, num_runs, thread_count):
         con.execute(query)
         print("Created secret to access the file.")
 
-    s3_path = get_s3_path(file_size)
-    print(f"file_size scannoed: {file_size}")
+    s3_path = get_s3_path(file_size, no_tls)
+    print(f"Scanning {s3_path}, file_size scannoed: {file_size}, no_tls: {no_tls}")
     times = []
     for i in range(num_runs):
         # Measure time taken to execute the query
@@ -69,7 +69,7 @@ def run_query(file_size, key_id, secret, num_runs, thread_count):
             SUM(total_amount) AS total_revenue,
             SUM(congestion_surcharge) AS total_congestion,
             SUM(Airport_fee) AS total_airport_fees
-        FROM '{s3_path}';
+        FROM read_parquet('{s3_path}');
         """
         con.execute(query)
         end_time = time.time()
@@ -87,7 +87,7 @@ def run_query(file_size, key_id, secret, num_runs, thread_count):
 def main():
     print(f"ddb_perf_python pid= {os.getpid()}")
     args = get_args()
-    run_query(args.file_size, args.key_id, args.secret, args.num_runs, args.thread_count)
+    run_query(args.file_size, args.no_tls, args.key_id, args.secret, args.num_runs, args.thread_count)
 
 
 if __name__ == "__main__":

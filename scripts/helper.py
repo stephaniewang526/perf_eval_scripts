@@ -31,6 +31,7 @@ def get_s3_path(file_size, no_tls):
 def get_args():
     parser = argparse.ArgumentParser()
     parser.add_argument("--file_size", type=str, default="1g", help="File size")
+    parser.add_argument("--num_files", type=int, default=1, help="Number of the same files to scan")
     parser.add_argument("--no_tls", type=str, default=False, help="Reading public file")
     parser.add_argument("--key_id", type=str, required=False, help="AWS access key ID")
     parser.add_argument("--secret", type=str, required=False, help="AWS secret access key")

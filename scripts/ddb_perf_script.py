@@ -41,7 +41,7 @@ def run_query(file_size, no_tls, key_id, secret, num_runs, thread_count):
         print("Created secret to access the file.")
 
     s3_path = get_s3_path(file_size, no_tls)
-    print(f"Scanning {s3_path}, file_size scannoed: {file_size}, no_tls: {no_tls}")
+    print(f"Scanning {s3_path}, file_size: {file_size}, no_tls: {no_tls}")
     times = []
     for i in range(num_runs):
         # Measure time taken to execute the query

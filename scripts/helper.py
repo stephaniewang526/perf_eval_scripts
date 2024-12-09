@@ -4,6 +4,8 @@ import argparse
 def get_s3_path(file_size, no_tls):
     if no_tls:
         return 'http://md-duckdblabs.s3.us-east-1.amazonaws.com/yellow_trip_data/yellow_trip_data_1gb.parquet'
+    elif file_size == "1g_https":
+        return 'https://md-duckdblabs.s3.us-east-1.amazonaws.com/yellow_trip_data/yellow_trip_data_1gb.parquet'
     elif file_size == "500m":
         return 's3://md-test-bucket-user-1/20_med_parquet_files/yellow_trip_data_med_1.parquet'
     elif file_size == "multi_500m":

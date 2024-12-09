@@ -69,7 +69,7 @@ def run_query(file_size, no_tls, key_id, secret, num_runs, thread_count):
             SUM(total_amount) AS total_revenue,
             SUM(congestion_surcharge) AS total_congestion,
             SUM(Airport_fee) AS total_airport_fees
-        FROM read_parquet('{s3_path}');
+        FROM '{s3_path}';
         """
         con.execute(query)
         end_time = time.time()
